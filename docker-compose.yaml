@@ -1,0 +1,32 @@
+version: '3.0'
+services:
+  cutler-app:
+    build: .
+    ports:
+      - "5000:80"
+      - "5001:443"
+    networks:
+      - cutler-network
+    depends_on:
+      - database
+    
+  database:
+    container_name: mongo-database
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: application_password
+    volumes:
+      - ~/mongo/data:/data/db
+    ports:
+     - "27017:27017"
+     - "27019:27019"
+    networks:
+      - cutler-network
+    
+volumes:
+  data:
+
+networks:
+  cutler-network:
+    driver: bridge
